@@ -1,15 +1,15 @@
 Summary:	LERC - Limited Error Raster Compression
 Summary(pl.UTF-8):	LERC (Limited Error Raster Compression) - kompresja rastrowa o ograniczonym błędzie
 Name:		lerc
-Version:	2.2.1
+Version:	4.0.0
 Release:	1
 License:	Apache v2.0
 Group:		Libraries
 #Source0Download: https://github.com/Esri/lerc/releases
 Source0:	https://github.com/Esri/lerc/archive/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	f81ba5cd098e9b37df9839ce3147b0bb
+# Source0-md5:	f5b00e53bf507aba13ca3de02726e2ba
 URL:		https://github.com/Esri/lerc
-BuildRequires:	cmake >= 3.11
+BuildRequires:	cmake >= 3.12
 BuildRequires:	libstdc++-devel >= 6:7
 BuildRequires:	rpm-build >= 4.6
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -59,7 +59,9 @@ Dokumentacja biblioteki Lerc.
 %build
 install -d builddir
 cd builddir
-%cmake ..
+%cmake .. \
+	-DCMAKE_INSTALL_INCLUDEDIR=include \
+	-DCMAKE_INSTALL_LIBDIR=%{_lib}
 
 %{__make}
 
@@ -78,12 +80,14 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc CHANGELOG.md NOTICE README.md
-%attr(755,root,root) %{_libdir}/libLercLib.so
+%attr(755,root,root) %{_libdir}/libLerc.so.4
 
 %files devel
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libLerc.so
 %{_includedir}/Lerc_c_api.h
 %{_includedir}/Lerc_types.h
+%{_pkgconfigdir}/Lerc.pc
 
 %files doc
 %defattr(644,root,root,755)
